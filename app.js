@@ -5,6 +5,5 @@ const engineer = require('./lib/Engineer');
 const manager = require('./lib/Manager');
 const questions = require('./lib/ques');
 
-const questions{
-    inquirer
-}
+const summary = () => prompt(questions);
+summary();
