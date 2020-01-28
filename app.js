@@ -1,16 +1,21 @@
 var inquirer = require("inquirer");
+
 var fs = require("fs");
+
 var path = require("path");
+
 var Employee = require("./lib/Employee");
+
 var Intern = require("./lib/Intern");
+
 var Engineer = require("./lib/Engineer");
+
 var Manager = require("./lib/Manager");
 
 var company = [];
 
 function summary() {
   console.log("Welcome to Team Builder!");
-
   inquirer
     .prompt([
       {
@@ -31,7 +36,7 @@ function summary() {
       }
     ])
     .then(function(answers) {
-      let manager = new Manager(
+      var manager = new Manager(
         answers.managerName,
         answers.id,
         answers.email,
@@ -42,6 +47,7 @@ function summary() {
       teamBuilder();
     });
 }
+
 function engineerAsk() {
   inquirer
     .prompt([
@@ -63,7 +69,7 @@ function engineerAsk() {
       }
     ])
     .then(function(answers) {
-      let engineer = new Engineer(
+      var engineer = new Engineer(
         answers.engineerName,
         answers.id,
         answers.email,
@@ -96,7 +102,7 @@ function internAsk() {
       }
     ])
     .then(function(answers) {
-      let intern = new Intern(
+      var intern = new Intern(
         answers.internName,
         answers.id,
         answers.email,
@@ -107,6 +113,7 @@ function internAsk() {
       teamBuilder();
     });
 }
+
 function teamBuilder() {
   inquirer
     .prompt([
@@ -117,13 +124,13 @@ function teamBuilder() {
         choices: ["Engineer", "Intern", "Continue"]
       }
     ])
-    .then(function(answers) {
-      if (answers.employee == "Engineer") {
+    .then(function(answer) {
+      if (answer.employee == "Engineer") {
         engineerAsk();
-      } else if (answers.employee == "Intern") {
+      } else if (answer.employee == "Intern") {
         internAsk();
       } else {
-        fs.writeFile("company.html", generateHTML(company), (err) => {
+        fs.writeFile("company.html", generateHTML(company), function(err) {
           if (err) throw err;
           console.log("Your team is saved to team.html");
           console.log("Thanks for using Team Builder!");
@@ -131,325 +138,13 @@ function teamBuilder() {
       }
     });
 }
+
 function generateHTML(data) {
-	console.log(data);
-    return `<!DOCTYPE html>
-    <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
-        <meta name="theme-color" content="#2196C3">
-        <title>Your Team</title>
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <style>
-        /* Custom Stylesheet */
-
-    .default_color{background-color: #2196C3 !important}
-
-    .default_color_text{color: #2196C3 !important}
-
-    .icon-block {
-        padding: 0 15px;
-    }
-
-    #intro, #work, #team {padding-top: 4rem;}
-
-
-    #index-banner {
-        min-height: 632px;
-        max-height: 864px;
-        position: relative;
-        background-color: #2196C3;
-    }
-
-    #nav_f{
-        box-shadow: none !important; 
-        -webkit-box-shadow:none !important;
-    }
-
-    .text_h {
-        padding: 15% 0;
-        font-size: 6.0em;
-        font-weight: 100;
-        color:white;
-    }
-
-    .brand-logo{
-        position: absolute;
-        color: #fff;
-        display: inline-block;
-        font-size: 2.1rem;
-        font-style: normal;
-        font-weight: 100;
-        padding: 0;
-        letter-spacing: 7px;
-    }
-
-    .text_h2 {font-weight: 100;margin-bottom: 4%; line-height: 4.5rem;}
-
-    .span_h2 {font-weight: 300;color: #2196C3;}
-
-    .text_b{color: #2196C3;}
-
-    .in{font-weight: 400 !important; font-style: normal !important;}
-
-    .promo i {
-        color: #2196C3;
-        font-size: 7rem;
-        display: block;
-    }
-    .card-content a {color: #2196C3;}
-
-    .card-content a:hover {color: #2196C3;}
-
-    #work, #team{background: rgb(247, 247, 247);}
-
-    .text_pink{color:#EF9A9A;}
-
-    nav ul a {
-        font-size: 1.2rem;
-        color: #FFF;
-        letter-spacing: 2px;
-        display: block;
-        font-weight: 300;
-        padding: 0px 15px;
-    }
-
-    .cd-headline.type .cd-words-wrapper {
-        vertical-align: top;
-        overflow: hidden;
-    }
-
-    .cd-headline.type .cd-words-wrapper::after {
-        /* vertical bar */
-        content: '';
-        position: absolute;
-        right: 0;
-        top: 50%;
-        bottom: auto;
-        -webkit-transform: translateY(-50%);
-        -moz-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        -o-transform: translateY(-50%);
-        transform: translateY(-50%);
-        height: 90%;
-        width: 1px;
-        background-color: #aebcb9;
-    }
-
-    .cd-headline.type .cd-words-wrapper.waiting::after {
-        -webkit-animation: cd-pulse 1s infinite;
-        -moz-animation: cd-pulse 1s infinite;
-        animation: cd-pulse 1s infinite;
-    }
-    .cd-headline.type .cd-words-wrapper.selected {
-        background-color: #FFF;
-    }
-
-    .cd-headline.type .cd-words-wrapper.selected::after {
-        visibility: hidden;
-    }
-
-    .cd-headline.type .cd-words-wrapper.selected b {
-        color: #2196C3;
-    }
-
-    .cd-headline.type b {
-        visibility: hidden;
-    }
-
-    .cd-headline.type b.is-visible {
-        visibility: visible;
-    }
-
-    .cd-headline.type i {
-        position: absolute;
-        visibility: hidden;
-    }
-    .cd-headline.type i.in {
-        position: relative;
-        visibility: visible;
-    }
-
-    @-webkit-keyframes cd-pulse {
-        0% {
-            -webkit-transform: translateY(-50%) scale(1);
-            opacity: 1;
-        }
-        40% {
-            -webkit-transform: translateY(-50%) scale(0.9);
-            opacity: 0;
-        }
-        100% {
-            -webkit-transform: translateY(-50%) scale(0);
-            opacity: 0;
-        }
-    }
-    @-moz-keyframes cd-pulse {
-        0% {
-            -moz-transform: translateY(-50%) scale(1);
-            opacity: 1;
-        }
-        40% {
-            -moz-transform: translateY(-50%) scale(0.9);
-            opacity: 0;
-        }
-        100% {
-            -moz-transform: translateY(-50%) scale(0);
-            opacity: 0;
-        }
-    }
-
-    @keyframes cd-pulse {
-        0% {
-            -webkit-transform: translateY(-50%) scale(1);
-            -moz-transform: translateY(-50%) scale(1);
-            -ms-transform: translateY(-50%) scale(1);
-            -o-transform: translateY(-50%) scale(1);
-            transform: translateY(-50%) scale(1);
-            opacity: 1;
-        }
-        40% {
-            -webkit-transform: translateY(-50%) scale(0.9);
-            -moz-transform: translateY(-50%) scale(0.9);
-            -ms-transform: translateY(-50%) scale(0.9);
-            -o-transform: translateY(-50%) scale(0.9);
-            transform: translateY(-50%) scale(0.9);
-            opacity: 0;
-        }
-        100% {
-            -webkit-transform: translateY(-50%) scale(0);
-            -moz-transform: translateY(-50%) scale(0);
-            -ms-transform: translateY(-50%) scale(0);
-            -o-transform: translateY(-50%) scale(0);
-            transform: translateY(-50%) scale(0);
-            opacity: 0;
-        }
-    }
-
-    #status {
-        width:200px;
-        height:200px;
-        position:absolute;
-        left:50%; /* centers the loading animation horizontally one the screen */
-        top:50%; /* centers the loading animation vertically one the screen */
-        background-image:url(../img/status.gif); /* path to your loading animation */
-        background-repeat:no-repeat;
-        background-position:center;
-        margin:-100px 0 0 -100px; /* is width and height divided by two */
-    }
-
-    @media only screen and (max-width: 480px) {
-        .text_h {
-            padding: 4% 0;
-            font-size: 5em;
-            font-weight: 100;
-            color: white;
-        }
-    }
-
-    input, textarea {
-        border-bottom: 1px solid #fff;
-    }
-
-    nav a.button-collapse {
-        left: -25px;
-    }
-
-    .card-avatar .waves-effect {
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    .card-avatar img {
-        height: 150px;
-        width: 150px;
-        border-radius: 75px;
-    }
-
-    .card-avatar .card-content {
-        text-align: center;
-    }
-
-    .card .card-content p {
-        margin: 15px 0px;
-    }
-
-    .card-avatar .card-content i {
-    font-size: 1.5rem;
-    }
-
-    .card-avatar .card-content .card-title {
-        line-height: 30px !important;
-    }
-
-    footer.page-footer {
-        margin-top: 0px !important;
-    }
-        </style>
-    </head>
-
-    <div class="navbar-fixed">
-        <nav id="nav_f" class="default_color" role="navigation">
-            <div class="container">
-                <div class="nav-wrapper">
-                    <a href="#" id="logo-container" class="brand-logo center">Your Company</a>
-                </div>
-            </div>
-        </nav>
-    </div>
-        <div class="container">
-            <div class="row">
-                <div  class="col s12">
-                    <h2 class="center header text_h2">Meet your<span class="span_h2"> Team  </span></h2>
-                </div>
-            </div>
-        </div> 
-
-        <div class="container">
-            <div class="row" id="buildTeam">
-                    
-            </div>
-            </div>
-        </div>
-    
-
-        <footer class="page-footer">
-        <div class="container">
-            <div class="row">
-                <div class="col l3 s12">
-                  <h5 class="white-text">Made by</h5>
-                  <ul>
-                     <li><a class="grey-text text-lighten-3" href="https://richardgermaine.herokuapp.com/">Richard Germaine</a></li>
-                  </ul>
-                </div>
-            </div>
-        </div>
-        <div class="footer-copyright">
-            <div class="container">
-        	    © 2020 Your Company
-            </div>
-        </div>
-    </footer>
-
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> 
-        <script type="text/javascript"> 
-
-                let teams = ${ JSON.stringify( data ) };
-                teams.forEach(function(res){
-                    if (res.title == 'Manager') {
-                        $("#buildTeam").append('<div class="col s12 m3"><div class="card card-avatar"><div class="waves-effect waves-block waves-light"> </div><div class="card-content"> <span class="card-title activator grey-text text-darken-4">'+res.name+'<br /> <small><em><a class="red-text text-darken-1" href="#">'+res.title+'</a></em></small></span><p><div class="blue-text text-lighten-2"> <i class="material-icons">Face</i></div><li><ul> Email: '+res.email+'</ul><ul> ID#: '+res.id+'</ul><ul> Staplers Taken: '+res.staplers+'</ul></li></p></div></div>'); }
-                    else if(res.title == 'Engineer') {
-                        $("#buildTeam").append('<div class="col s12 m3"><div class="card card-avatar"><div class="waves-effect waves-block waves-light"> </div><div class="card-content"> <span class="card-title activator grey-text text-darken-4">'+res.name+'<br /> <small><em><a class="red-text text-darken-1" href="#">'+res.title+'</a></em></small></span><p><div class="blue-text text-lighten-2"> <i class="material-icons">developer_mode</i></div><li><ul> Email: '+res.email+'</ul><ul> ID#: '+res.id+'</ul><ul> GitHub: '+res.gitHub+'</ul></li></p></div></div>'); }
-                    else if(res.title == 'Intern') {
-                        $("#buildTeam").append('<div class="col s12 m3"><div class="card card-avatar"><div class="waves-effect waves-block waves-light"> </div><div class="card-content"> <span class="card-title activator grey-text text-darken-4">'+res.name+'<br /> <small><em><a class="red-text text-darken-1" href="#">'+res.title+'</a></em></small></span><p><div class="blue-text text-lighten-2"> <i class="material-icons">child_care</i></div><li><ul> Email: '+res.email+'</ul><ul> ID#: +res.id+</ul><ul> Bootcamp: '+res.bootCamp+'</ul></li></p></div></div>'); }
-                });
-            </script>
-        </body>
-    </html>`
+  console.log(data);
+  return '<!DOCTYPE html>\n    <html>\n    <head>\n        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>\n        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>\n        <meta name="theme-color" content="#2196C3">\n        <title>Your Team</title>\n\n        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">\n        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">\n        <style>\n        /* Custom Stylesheet */\n\n    .default_color{background-color: #2196C3 !important}\n\n    .default_color_text{color: #2196C3 !important}\n\n    .icon-block {\n        padding: 0 15px;\n    }\n\n    #intro, #work, #team {padding-top: 4rem;}\n\n\n    #index-banner {\n        min-height: 632px;\n        max-height: 864px;\n        position: relative;\n        background-color: #2196C3;\n    }\n\n    #nav_f{\n        box-shadow: none !important; \n        -webkit-box-shadow:none !important;\n    }\n\n    .text_h {\n        padding: 15% 0;\n        font-size: 6.0em;\n        font-weight: 100;\n        color:white;\n    }\n\n    .brand-logo{\n        position: absolute;\n        color: #fff;\n        display: inline-block;\n        font-size: 2.1rem;\n        font-style: normal;\n        font-weight: 100;\n        padding: 0;\n        letter-spacing: 7px;\n    }\n\n    .text_h2 {font-weight: 100;margin-bottom: 4%; line-height: 4.5rem;}\n\n    .span_h2 {font-weight: 300;color: #2196C3;}\n\n    .text_b{color: #2196C3;}\n\n    .in{font-weight: 400 !important; font-style: normal !important;}\n\n    .promo i {\n        color: #2196C3;\n        font-size: 7rem;\n        display: block;\n    }\n    .card-content a {color: #2196C3;}\n\n    .card-content a:hover {color: #2196C3;}\n\n    #work, #team{background: rgb(247, 247, 247);}\n\n    .text_pink{color:#EF9A9A;}\n\n    nav ul a {\n        font-size: 1.2rem;\n        color: #FFF;\n        letter-spacing: 2px;\n        display: block;\n        font-weight: 300;\n        padding: 0px 15px;\n    }\n\n    .cd-headline.type .cd-words-wrapper {\n        vertical-align: top;\n        overflow: hidden;\n    }\n\n    .cd-headline.type .cd-words-wrapper::after {\n        /* vertical bar */\n        content: \'\';\n        position: absolute;\n        right: 0;\n        top: 50%;\n        bottom: auto;\n        -webkit-transform: translateY(-50%);\n        -moz-transform: translateY(-50%);\n        -ms-transform: translateY(-50%);\n        -o-transform: translateY(-50%);\n        transform: translateY(-50%);\n        height: 90%;\n        width: 1px;\n        background-color: #aebcb9;\n    }\n\n    .cd-headline.type .cd-words-wrapper.waiting::after {\n        -webkit-animation: cd-pulse 1s infinite;\n        -moz-animation: cd-pulse 1s infinite;\n        animation: cd-pulse 1s infinite;\n    }\n    .cd-headline.type .cd-words-wrapper.selected {\n        background-color: #FFF;\n    }\n\n    .cd-headline.type .cd-words-wrapper.selected::after {\n        visibility: hidden;\n    }\n\n    .cd-headline.type .cd-words-wrapper.selected b {\n        color: #2196C3;\n    }\n\n    .cd-headline.type b {\n        visibility: hidden;\n    }\n\n    .cd-headline.type b.is-visible {\n        visibility: visible;\n    }\n\n    .cd-headline.type i {\n        position: absolute;\n        visibility: hidden;\n    }\n    .cd-headline.type i.in {\n        position: relative;\n        visibility: visible;\n    }\n\n    @-webkit-keyframes cd-pulse {\n        0% {\n            -webkit-transform: translateY(-50%) scale(1);\n            opacity: 1;\n        }\n        40% {\n            -webkit-transform: translateY(-50%) scale(0.9);\n            opacity: 0;\n        }\n        100% {\n            -webkit-transform: translateY(-50%) scale(0);\n            opacity: 0;\n        }\n    }\n    @-moz-keyframes cd-pulse {\n        0% {\n            -moz-transform: translateY(-50%) scale(1);\n            opacity: 1;\n        }\n        40% {\n            -moz-transform: translateY(-50%) scale(0.9);\n            opacity: 0;\n        }\n        100% {\n            -moz-transform: translateY(-50%) scale(0);\n            opacity: 0;\n        }\n    }\n\n    @keyframes cd-pulse {\n        0% {\n            -webkit-transform: translateY(-50%) scale(1);\n            -moz-transform: translateY(-50%) scale(1);\n            -ms-transform: translateY(-50%) scale(1);\n            -o-transform: translateY(-50%) scale(1);\n            transform: translateY(-50%) scale(1);\n            opacity: 1;\n        }\n        40% {\n            -webkit-transform: translateY(-50%) scale(0.9);\n            -moz-transform: translateY(-50%) scale(0.9);\n            -ms-transform: translateY(-50%) scale(0.9);\n            -o-transform: translateY(-50%) scale(0.9);\n            transform: translateY(-50%) scale(0.9);\n            opacity: 0;\n        }\n        100% {\n            -webkit-transform: translateY(-50%) scale(0);\n            -moz-transform: translateY(-50%) scale(0);\n            -ms-transform: translateY(-50%) scale(0);\n            -o-transform: translateY(-50%) scale(0);\n            transform: translateY(-50%) scale(0);\n            opacity: 0;\n        }\n    }\n\n    #status {\n        width:200px;\n        height:200px;\n        position:absolute;\n        left:50%; /* centers the loading animation horizontally one the screen */\n        top:50%; /* centers the loading animation vertically one the screen */\n        background-image:url(../img/status.gif); /* path to your loading animation */\n        background-repeat:no-repeat;\n        background-position:center;\n        margin:-100px 0 0 -100px; /* is width and height divided by two */\n    }\n\n    @media only screen and (max-width: 480px) {\n        .text_h {\n            padding: 4% 0;\n            font-size: 5em;\n            font-weight: 100;\n            color: white;\n        }\n    }\n\n    input, textarea {\n        border-bottom: 1px solid #fff;\n    }\n\n    nav a.button-collapse {\n        left: -25px;\n    }\n\n    .card-avatar .waves-effect {\n        text-align: center;\n        margin-top: 20px;\n    }\n\n    .card-avatar img {\n        height: 150px;\n        width: 150px;\n        border-radius: 75px;\n    }\n\n    .card-avatar .card-content {\n        text-align: center;\n    }\n\n    .card .card-content p {\n        margin: 15px 0px;\n    }\n\n    .card-avatar .card-content i {\n    font-size: 1.5rem;\n    }\n\n    .card-avatar .card-content .card-title {\n        line-height: 30px !important;\n    }\n\n    footer.page-footer {\n        margin-top: 0px !important;\n    }\n        </style>\n    </head>\n<body>\n    <div class="navbar-fixed">\n        <nav id="nav_f" class="default_color" role="navigation">\n            <div class="container">\n                <div class="nav-wrapper">\n                    <a href="#" id="logo-container" class="brand-logo center">Your Company</a>\n                </div>\n            </div>\n        </nav>\n    </div>\n        <div class="container">\n            <div class="row">\n                <div  class="col s12">\n                    <h2 class="center header text_h2">Meet your<span class="span_h2"> Team  </span></h2>\n                </div>\n            </div>\n        </div> \n\n        <div class="container">\n            <div class="row" id="buildTeam">\n                    \n            </div>\n            </div>\n        </div>\n    \n\n        <footer class="page-footer">\n        <div class="container">\n            <div class="row">\n                <div class="col l3 s12">\n                  <h5 class="white-text">Made by</h5>\n                  <ul>\n                     <li><a class="grey-text text-lighten-3" href="https://richardgermaine.herokuapp.com/">Richard Germaine</a></li>\n                  </ul>\n                </div>\n            </div>\n        </div>\n        <div class="footer-copyright">\n            <div class="container">\n        \t    \xA9 2020 Your Company\n            </div>\n        </div>\n    </footer>\n\n        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>\n        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> \n        <script type="text/javascript"> \n\n                let company = '.concat(
+    JSON.stringify(data),
+    ';\n                company.forEach(function(res){\n                    if (res.title == \'Manager\') {\n                        $("#buildTeam").append(\'<div class="col s12 m3"><div class="card card-avatar"><div class="waves-effect waves-block waves-light"> </div><div class="card-content"> <span class="card-title activator grey-text text-darken-4">\'+res.name+\'<br /> <small><em><a class="red-text text-darken-1" href="#">\'+res.title+\'</a></em></small></span><p><div class="blue-text text-lighten-2"> <i class="material-icons">face</i></div><ul><li> Email: \'+res.email+\'</li><li> ID#: \'+res.id+\'</li><li> Staplers Taken: \'+res.staplers+\'</li></ul></p></div></div>\'); }\n                    else if(res.title == \'Engineer\') {\n                        $("#buildTeam").append(\'<div class="col s12 m3"><div class="card card-avatar"><div class="waves-effect waves-block waves-light"> </div><div class="card-content"> <span class="card-title activator grey-text text-darken-4">\'+res.name+\'<br /> <small><em><a class="red-text text-darken-1" href="#">\'+res.title+\'</a></em></small></span><p><div class="blue-text text-lighten-2"> <i class="material-icons">developer_mode</i></div><ul><li> Email: \'+res.email+\'</li><li> ID#: \'+res.id+\'</li><li> GitHub: \'+res.gitHub+\'</li></ul></p></div></div>\'); }\n                    else if(res.title == \'Intern\') {\n                        $("#buildTeam").append(\'<div class="col s12 m3"><div class="card card-avatar"><div class="waves-effect waves-block waves-light"> </div><div class="card-content"> <span class="card-title activator grey-text text-darken-4">\'+res.name+\'<br /> <small><em><a class="red-text text-darken-1" href="#">\'+res.title+\'</a></em></small></span><p><div class="blue-text text-lighten-2"> <i class="material-icons">child_care</i></div><ul><li> Email: \'+res.email+\'</li><li> ID#: \'+res.id+\'</li><li> Bootcamp: \'+res.bootCamp+\'</li></ul></p></div></div>\'); }\n                });\n            </script>\n        \n</body>\n</html>'
+  );
 }
 
 summary();
